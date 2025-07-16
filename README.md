@@ -1,5 +1,7 @@
 ## Rock-Paper-Scissors Battle Area
 
+![Simulation Screenshot](output/simulation.png)
+
 This project is an interactive simulation of the classic Rock-Paper-Scissors game, visualized with physics-based motion and collisions. Built using [p5.js](https://p5js.org/) for rendering and [Matter.js](https://brm.io/matter-js/) for 2D physics, it demonstrates emergent behavior as items interact and convert each other according to the familiar RPS rules.
 
 ### Features
