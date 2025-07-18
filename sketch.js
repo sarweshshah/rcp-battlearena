@@ -93,5 +93,40 @@ function draw() {
   
   textStyle(NORMAL);
   textSize(18);
-  text(`Total: ${total}   [ 🪨: ${rockCount}    📜: ${paperCount}    ✂️: ${scissorsCount} ]`, 24, 54);
+  text(
+    `Total: ${total}   [ 🪨: ${rockCount}    📜: ${paperCount}    ✂️: ${scissorsCount} ]`,
+    24,
+    54
+  );
+
+  // Flash win message if only one type remains
+  let winner = null;
+  if (rockCount === total && total > 0) winner = "Rock";
+  else if (paperCount === total && total > 0) winner = "Paper";
+  else if (scissorsCount === total && total > 0) winner = "Scissors";
+
+  if (winner) {
+    push();
+    textAlign(CENTER, CENTER);
+    textStyle(BOLD);
+    textSize(42);
+    const msg = `${winner} wins!`;
+
+    // Calculate text dimensions
+    const paddingX = 32;
+    const paddingY = 20;
+    const tw = textWidth(msg);
+    const th = 52; // Approximate height for size 42
+
+    // Draw rectangle behind text
+    rectMode(CENTER);
+    fill(60, 230);
+    noStroke();
+    rect(width / 2, height / 2, tw + paddingX, th + paddingY, 4);
+
+    // Draw text
+    fill(255, 255, 0, 220);
+    text(msg, width / 2, height / 2);
+    pop();
+  }
 }
