@@ -10,7 +10,7 @@ let items = [];
 let walls = [];
 
 function setup() {
-  createCanvas(600, 800);
+  createCanvas(750, 750);
 
   // Create engine and world
   engine = Engine.create();
@@ -46,9 +46,12 @@ function draw() {
   // Step the physics engine
   Engine.update(engine);
 
-  // Add mutual attraction between items
-  const attractionStrength = 0.0000001;
+  // Add mutual attraction between items ONLY if average velocity is low
+  const attractionStrength = 0.00000001;
+  const velocityThreshold = 0.1;
+  if (getAverageVelocity(items) < velocityThreshold) {
   applyMutualAttraction(items, attractionStrength);
+  }
 
   // Uncomment to show boundary walls
   // showBoundaryWalls(walls);

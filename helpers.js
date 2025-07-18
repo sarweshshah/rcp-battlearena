@@ -75,5 +75,16 @@ function drawDotSheet(
   pop();
 }
 
+// Compute average velocity magnitude of all items
+function getAverageVelocity(items) {
+  if (items.length === 0) return 0;
+  let total = 0;
+  for (let it of items) {
+    const v = it.body.velocity;
+    total += Math.sqrt(v.x * v.x + v.y * v.y);
+  }
+  return total / items.length;
+}
+
 // Export helpers (for clarity, even if not using modules)
 // If using modules, use: export { drawDottedRect };
