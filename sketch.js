@@ -8,6 +8,7 @@ let Engine = Matter.Engine,
 let engine, world;
 let items = [];
 let walls = [];
+let winner = null;
 
 function setup() {
   createCanvas(750, 750);
@@ -41,16 +42,16 @@ function setup() {
 }
 
 function draw() {
-  background(40);
+  background(30);
 
   // Step the physics engine
   Engine.update(engine);
 
   // Add mutual attraction between items ONLY if average velocity is low
   const attractionStrength = 0.00000001;
-  const velocityThreshold = 0.1;
+  const velocityThreshold = 0.2;
   if (getAverageVelocity(items) < velocityThreshold) {
-  applyMutualAttraction(items, attractionStrength);
+    applyMutualAttraction(items, attractionStrength);
   }
 
   // Uncomment to show boundary walls
@@ -67,7 +68,7 @@ function draw() {
   const bottom =
     walls[1].position.y - (walls[1].position.y - walls[1].bounds.min.y);
   drawDottedRect(left, top, right - left, bottom - top, 2, 6);
-  
+
   // Draw dot sheet inside the inner boundary
   drawDotSheet(left, top, right - left, bottom - top);
 
@@ -89,11 +90,11 @@ function draw() {
   noStroke();
   fill(255, 220);
   textAlign(LEFT, TOP);
-  
+
   textStyle(BOLD);
   textSize(20);
   text(`RPS Battle Ground ⚔️`, 24, 24);
-  
+
   textStyle(NORMAL);
   textSize(18);
   text(
@@ -102,11 +103,17 @@ function draw() {
     54
   );
 
-  // Flash win message if only one type remains
-  let winner = null;
-  if (rockCount === total && total > 0) winner = "Rock";
-  else if (paperCount === total && total > 0) winner = "Paper";
-  else if (scissorsCount === total && total > 0) winner = "Scissors";
+  // Flash win message if one type is eliminated, declare winner based on RPS rules
+  if (rockCount === 0 && paperCount > 0 && scissorsCount > 0) {
+    // Only paper and scissors remain: scissors beats paper
+    winner = "Scissors";
+  } else if (paperCount === 0 && rockCount > 0 && scissorsCount > 0) {
+    // Only rock and scissors remain: rock beats scissors
+    winner = "Rock";
+  } else if (scissorsCount === 0 && rockCount > 0 && paperCount > 0) {
+    // Only rock and paper remain: paper beats rock
+    winner = "Paper";
+  }
 
   if (winner) {
     push();
@@ -116,7 +123,7 @@ function draw() {
     const msg = `${winner} wins!`;
 
     // Calculate text dimensions
-    const paddingX = 32;
+    const paddingX = 48;
     const paddingY = 20;
     const tw = textWidth(msg);
     const th = 52; // Approximate height for size 42
@@ -128,7 +135,7 @@ function draw() {
     rect(width / 2, height / 2, tw + paddingX, th + paddingY, 4);
 
     // Draw text
-    fill(255, 255, 0, 220);
+    fill(255, 255, 255, 220);
     text(msg, width / 2, height / 2);
     pop();
   }
